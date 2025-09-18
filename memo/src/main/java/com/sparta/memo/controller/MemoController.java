@@ -3,21 +3,17 @@ package com.sparta.memo.controller;
 import com.sparta.memo.dto.MemoRequestDto;
 import com.sparta.memo.dto.MemoResponseDto;
 import com.sparta.memo.service.MemoService;
-import org.springframework.jdbc.core.JdbcTemplate;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class MemoController {
 
-    private final JdbcTemplate jdbcTemplate;
     private final MemoService memoService;
 
-    public MemoController(JdbcTemplate jdbcTemplate, MemoService memoService) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.memoService = memoService;
-    }
 
     @PostMapping("/memos")
     public MemoResponseDto createMemo(@RequestBody MemoRequestDto requestDto) {

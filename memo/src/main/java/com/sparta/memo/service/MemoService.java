@@ -4,6 +4,7 @@ import com.sparta.memo.dto.MemoRequestDto;
 import com.sparta.memo.dto.MemoResponseDto;
 import com.sparta.memo.entity.Memo;
 import com.sparta.memo.repository.MemoRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,30 +27,30 @@ public class MemoService {
     }
 
     public List<MemoResponseDto> getMemos() {
-        return memoRepository.findAll();
+        return memoRepository.findAll().stream().map(MemoResponseDto::new).toList();
     }
 
+    @Transactional
+    //트랜잭션 환경을 만들어줘야 영속성 컨텍스트 활용해서 변경감지 가능
     public Long updateMemo(Long id, MemoRequestDto requestDto) {
         // 해당 메모가 DB에 존재하는지 확인
-        Memo memo = memoRepository.findById(id);
-        if(memo != null) {
-            return memoRepository.update(id, requestDto);
-
-        } else {
-            throw new IllegalArgumentException("선택한 메모는 존재하지 않습니다.");
-        }
+        Memo memo = findMemo(id);
+        memo.update(requestDto);
+        return id;
     }
 
 
 
     public Long deleteMemo(Long id) {
         // 해당 메모가 DB에 존재하는지 확인
-        Memo memo = memoRepository.findById(id);
-        if(memo != null) {
-            return memoRepository.delete(id);
+        Memo memo = findMemo(id);
+        memoRepository.delete(memo);
+        return id;
+    }
 
-        } else {
-            throw new IllegalArgumentException("선택한 메모는 존재하지 않습니다.");
-        }
+    private Memo findMemo(Long id){
+        return memoRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("선택한 메모는 존재하지 않습니다.")
+        );
     }
 }
