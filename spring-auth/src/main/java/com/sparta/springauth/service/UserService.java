@@ -1,16 +1,11 @@
 package com.sparta.springauth.service;
 
 
-import com.sparta.springauth.controller.LoginRequestDto;
 import com.sparta.springauth.dto.SignupRequestDto;
 import com.sparta.springauth.entity.User;
 import com.sparta.springauth.jwt.JwtUtil;
 import com.sparta.springauth.jwt.UserRoleEnum;
 import com.sparta.springauth.repository.UserRepository;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.Jwts;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,21 +52,21 @@ public class UserService {
         User user = new User(username, password, email, role);
         userRepository.save(user);
     }
-
-    public void login(LoginRequestDto loginRequestDto, HttpServletResponse res) {
-        String username = loginRequestDto.getUsername();
-        String password = loginRequestDto.getPassword();
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
-        );
-
-        //평문, 암호문
-        if(!passwordEncoder.matches(password,user.getPassword())){
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }else{
-            String token = jwtUtil.createToken(username,user.getRole());
-            jwtUtil.addJwtToCookie(token,res);
-        }
-
-    }
+//    시큐리티로 구현
+//    public void login(LoginRequestDto loginRequestDto, HttpServletResponse res) {
+//        String username = loginRequestDto.getUsername();
+//        String password = loginRequestDto.getPassword();
+//        User user = userRepository.findByUsername(username).orElseThrow(
+//                () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
+//        );
+//
+//        //평문, 암호문
+//        if(!passwordEncoder.matches(password,user.getPassword())){
+//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+//        }else{
+//            String token = jwtUtil.createToken(username,user.getRole());
+//            jwtUtil.addJwtToCookie(token,res);
+//        }
+//
+//    }
 }
