@@ -1,4 +1,4 @@
-package com.sparta.spring_auth;
+package com.sparta.springauth;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

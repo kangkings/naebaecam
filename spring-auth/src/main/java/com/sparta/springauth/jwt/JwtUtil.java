@@ -1,4 +1,4 @@
-package com.sparta.spring_auth.jwt;
+package com.sparta.springauth.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -44,7 +44,7 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public String createToken(String username, com.sparta.spring_auth.jwt.UserRoleEnum role) {
+    public String createToken(String username, UserRoleEnum role) {
         Date date = new Date();
 
         return BEARER_PREFIX +

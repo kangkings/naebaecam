@@ -1,4 +1,4 @@
-package com.sparta.spring_auth.jwt;
+package com.sparta.springauth.jwt;
 
 public enum UserRoleEnum {
     //()안에 값 넣으면 생성자에 전달하는 것
