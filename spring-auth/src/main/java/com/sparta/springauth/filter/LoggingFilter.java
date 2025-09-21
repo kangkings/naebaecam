@@ -10,7 +10,7 @@ import java.io.IOException;
 
 //로깅 네이밍 (로그에 이 이름으로 찍힘)
 @Slf4j(topic = "LoggingFilter")
-@Component
+//@Component
 //필터 체인의 순서
 @Order(1)
 public class LoggingFilter implements Filter {
