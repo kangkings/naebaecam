@@ -32,6 +32,12 @@ public class FolderService {
         folderRepository.saveAll(folderList);
     }
 
+    public List<FolderResponseDto> getFolders(User user) {
+        List<FolderResponseDto> responseList = folderRepository.findAllByUser(user).stream()
+                .map(FolderResponseDto::new).toList();
+        return responseList;
+    }
+
     public boolean isExistFolderName(String folderName, List<Folder> existFolderList){
         for (Folder folder : existFolderList) {
             if(folder.getName().equals(folderName)){
@@ -41,9 +47,5 @@ public class FolderService {
         return false;
     }
 
-    public List<FolderResponseDto> getFolders(User user) {
-        List<FolderResponseDto> responseList = folderRepository.findAllByUser(user).stream()
-                .map(FolderResponseDto::new).toList();
-        return responseList;
-    }
+
 }

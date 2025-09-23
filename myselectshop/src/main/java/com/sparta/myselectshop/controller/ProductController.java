@@ -39,4 +39,11 @@ public class ProductController {
         return productService.getProducts(userDetails.getUser(),
                 page-1, size, sortBy, isAsc);
     }
+
+    @PostMapping("/products/{productId}/folder")
+    public void addProductFolder(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                 @PathVariable Long productId,
+                                 @RequestParam Long folderId){
+        productService.addFolder(productId,folderId,userDetails.getUser());
+    }
 }
