@@ -4,13 +4,13 @@ import com.sparta.myselectshop.dto.ProductMypriceRequestDto;
 import com.sparta.myselectshop.dto.ProductRequestDto;
 import com.sparta.myselectshop.dto.ProductResponseDto;
 import com.sparta.myselectshop.entity.Product;
+import com.sparta.myselectshop.entity.User;
 import com.sparta.myselectshop.naver.dto.ItemDto;
 import com.sparta.myselectshop.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,8 +18,8 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
     public static final int MIN_MY_PRICE = 100;
-    public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
-        Product product = productRepository.save(new Product(productRequestDto));
+    public ProductResponseDto createProduct(ProductRequestDto productRequestDto, User user) {
+        Product product = productRepository.save(new Product(productRequestDto,user));
         return new ProductResponseDto(product);
     }
 
@@ -36,13 +36,14 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
-    public List<ProductResponseDto> getProducts() {
+    public List<ProductResponseDto> getProducts(User user) {
 //        List<Product> productList = productRepository.findAll();
 //        List<ProductResponseDto> responseList = new ArrayList<>();
 //        for (Product product : productList) {
 //            responseList.add(new ProductResponseDto(product));
 //        }
-        List<ProductResponseDto> responseList = productRepository.findAll().stream().map(ProductResponseDto::new).toList();
+
+        List<ProductResponseDto> responseList = productRepository.findAllByUser(user).stream().map(ProductResponseDto::new).toList();
         return responseList;
     }
 
@@ -51,5 +52,11 @@ public class ProductService {
         Product product = productRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 상품은 존재하지 않습니다."));
         product.update(itemDto);
+    }
+
+    public List<ProductResponseDto> getAllProducts() {
+        List<ProductResponseDto> responseList = productRepository.findAll().stream()
+                .map(ProductResponseDto::new).toList();
+        return responseList;
     }
 }
