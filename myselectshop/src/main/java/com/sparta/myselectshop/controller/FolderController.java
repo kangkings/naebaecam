@@ -25,7 +25,7 @@ public class FolderController {
     }
 
     @GetMapping("/folders")
-    public List<FolderResponseDto> getFolders(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public List<FolderResponseDto> getFolders(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return folderService.getFolders(userDetails.getUser());
     }
 }
